@@ -16,19 +16,19 @@ class Lead(db.Model):
     message_text = db.Column(db.Text)
     message_sent_at = db.Column(db.DateTime)
     error_message = db.Column(db.Text)
-    metadata = db.Column(db.Text, default='{}')  # JSON string for lead form data
+    form_data = db.Column(db.Text, default='{}')  # JSON string for lead form data
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
-    def get_metadata(self):
-        """Get metadata as dictionary"""
+    def get_form_data(self):
+        """Get form data as dictionary"""
         try:
-            return json.loads(self.metadata) if self.metadata else {}
+            return json.loads(self.form_data) if self.form_data else {}
         except:
             return {}
 
-    def set_metadata(self, metadata_dict):
-        """Set metadata from dictionary"""
-        self.metadata = json.dumps(metadata_dict)
+    def set_form_data(self, form_data_dict):
+        """Set form data from dictionary"""
+        self.form_data = json.dumps(form_data_dict)
 
     def to_dict(self):
         """Convert lead to dictionary"""
@@ -42,7 +42,7 @@ class Lead(db.Model):
             'message_text': self.message_text,
             'message_sent_at': self.message_sent_at.isoformat() if self.message_sent_at else None,
             'error_message': self.error_message,
-            'metadata': self.get_metadata(),
+            'form_data': self.get_form_data(),
             'created_at': self.created_at.isoformat() if self.created_at else None
         }
 
